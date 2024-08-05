@@ -30,7 +30,6 @@ A§*£`<ñŽƱʬʄ˧ξϾζѨБԬփ
 ```
 Remarque : Ce chiffre ne peut pas être brisé si la taille de la clé est égale à la taille du message. Plus une clé est longue plus elle diminue la fréquence d'apparition de répétition dans le texte chiffré de caractères ce qui peut brisé le code. 
 
-Contact : ¦²¶­¸Ç¥¾¼­¹¼¼³²µµ}¯´Á    
-Clé : Violet 
+Contact à la fin du code source.
 
 
