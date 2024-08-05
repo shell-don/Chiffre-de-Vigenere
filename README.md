@@ -28,7 +28,7 @@ Entrez la clé de chiffrement :
 GitHub
 A§*£`<ñŽƱʬʄ˧ξϾζѨБԬփ
 ```
-Remarque : Ce chiffre ne peut pas être brisé si la taille de la clé est égale à la taille du message. Plus une clé est longue plus elle diminue la fréquence d'apparition de répétition dans le texte chiffré de caractères, donc sa probabilité d'être brisé. 
+Remarque : Ce chiffre ne peut pas être brisé si la taille de la clé est égale à la taille du message. Plus une clé est longue plus elle diminue la fréquence d'apparition de répétition de chaines de caractères dans le texte chiffré , donc sa probabilité d'être brisé. 
 
 Contact à la fin du code source.
 
