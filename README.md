@@ -11,7 +11,7 @@ Lors de l'ouverture de l'exécutable ce message s'affiche :
 ```bash
 Voulez-vous Chiffrer (1) ou Déchiffrer (2) ?
 ```
-Quelques exemples de chiffrement (haut) et de déchiffrement (bas), décalage de 2 (modifiable) :
+Quelques exemples de chiffrement (haut) et de déchiffrement (bas) :
 ```bash
 1
 Entrez le message à chiffrer : 
