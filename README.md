@@ -1,10 +1,10 @@
-# Chiffre-de-Vigenere
+# Chiffre de Vigenère
 Un chiffre de Vigenère universel qui ne prend en compte que les alphabets occidentaux modernes (jusqu'au point de code 1423) ce qui comprend le Latin de base et étendu, l'alphabet phonétique international, le Grec, le Copte, le Cyrillique et l'Arménien mais aussi des caractères de commandes et des diacritiques. 
 
 ## Installation
 
 ```zsh
-gcc -o Vigenere Vigenere.c
+gcc -o Vigenère Vigenère.c
 ```
 ## Usage
 Lors de l'ouverture de l'exécutable ce message s'affiche :
