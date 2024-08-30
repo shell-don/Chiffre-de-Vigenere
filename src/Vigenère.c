@@ -126,7 +126,7 @@ int main () {
          }
       }
    }
-
+   MessageOrigine[messageLen] = L'\0' ;
    // nettoyage de la clé de chiffrement
    for (int i = 0 ; i < MAX_MESSAGE_LENGTH ; i++) {
       Key[i] = 0 ; repeatedKey[i] = 0 ;
