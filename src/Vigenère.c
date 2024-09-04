@@ -24,7 +24,8 @@ int main(void) {
     
     setlocale(LC_ALL, "");
 
-    size_t buffer_size = 1024 ;  	
+	// 1024 est la taille maximale du message (modifiable)
+    	size_t buffer_size = 1024 ;  	
 	char Choice[3] ; 
 
 	printf("Voulez-vous chiffrer (1) ou déchiffrer (2) ?\n") ;
