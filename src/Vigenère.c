@@ -1,16 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <wctype.h>
 #include <wchar.h>
 #include <locale.h>
-#include <string.h>
-
-#define MAX_CHARACTER 1423          // ֏ est le dernier caractère (Arménien)
-#define MAX_MESSAGE_LENGTH 15000  
 
 
 void repeatKey(wchar_t *key, wchar_t *message, wchar_t *repeatedKey) {
-    int messageLen = wcslen(message);
-    int keyLen = wcslen(key);
-    int i, j;
+    size_t messageLen = wcslen(message);
+    size_t keyLen = wcslen(key);
+    size_t i, j;
 
     for (i = 0, j = 0; i < messageLen; i++, j++) {
         if (j == keyLen) {
@@ -22,125 +20,137 @@ void repeatKey(wchar_t *key, wchar_t *message, wchar_t *repeatedKey) {
 }
 
 
-int main () {
- 
-   setlocale(LC_ALL, "") ;
-   wchar_t Tableau_Alphabet[MAX_CHARACTER][MAX_CHARACTER], Message[MAX_MESSAGE_LENGTH], Key[MAX_MESSAGE_LENGTH], repeatedKey[MAX_MESSAGE_LENGTH], MessageChiffre[MAX_MESSAGE_LENGTH] ;
-   int Choice ;
+int main(void) {
     
+    setlocale(LC_ALL, "");
 
-   printf("Voulez-vous Chiffrer (1) ou Déchiffrer (2) ?\n") ;
-   scanf("%d", &Choice) ;
-   getchar();
+    size_t buffer_size = 1024 ;  	
+	char Choice[3] ; 
 
-   // définition du Tableau de Vigenere
-   for (int i = 0 ; i < MAX_CHARACTER ; i++) {          
-      for (int j = 0 ; j < MAX_CHARACTER ; j++) {
-         int index = (j + i) % MAX_CHARACTER ;
-         wchar_t wcc = index + 32  ;          
-         Tableau_Alphabet[i][j] = wcc ;
-      }
-   }
+	printf("Voulez-vous chiffrer (1) ou déchiffrer (2) ?\n") ;
+	fgets(Choice, 3, stdin) ;
 
-   if (Choice == 1) {
+	if (*(&Choice[0]) != '1' && *(&Choice[0]) != '2') {
+        	printf("Choix invalide.\n");
+        	return 1 ; 
+    	}
+	
+    	
+   	wchar_t* buffer = (wchar_t*)calloc(buffer_size, sizeof(wchar_t)) ;
+	if (buffer == NULL) {
+        	fwprintf(stderr, L"Erreur d'allocation de mémoire pour le tampon\n") ;
+        	return 1 ;
+    	}
 
-   // récupération du message 
-   printf("Entrez le message à chiffrer : \n") ;
-   fgetws(Message, sizeof(Message) / sizeof(wchar_t), stdin) ;
-   size_t messageLen = wcslen(Message);
+    	fwprintf(stdout, L"Entrez le message : \n") ;
+    	if (fgetws(buffer, buffer_size, stdin) == NULL) {
+        	fwprintf(stderr, L"Erreur de lecture de l'entrée\n") ;
+        	free(buffer) ;
+        	return 1 ;
+    	}
 
-      if (Message[messageLen - 1] == L'\n') {
-         Message[messageLen - 1] = L'\0';
-      }
-   
-   // récupération de la clé
-   printf("Entrez la clé de chiffrement : \n") ;
-   fgetws(Key, sizeof(Key) / sizeof(wchar_t), stdin) ;
-   size_t keyLen = wcslen(Key) ;
- 
-      // enlève la séquence d'échapement de retour à la ligne
-      if (Key[keyLen - 1] == L'\n') {
-         Key[keyLen - 1] = L'\0' ;
-      }
+    	size_t size_message = wcslen(buffer) ;
+    	if (size_message > 0 && buffer[size_message - 1] == L'\n') {
+        	buffer[size_message - 1] = L'\0' ;
+        	size_message-- ;
+    	}
 
-      // répétition de la clé en fonction du message, sortie : repeatedKey
-      repeatKey(Key, Message, repeatedKey) ;
+    	wchar_t* message = (wchar_t*)calloc(size_message + 1, sizeof(wchar_t)) ;
+    	if (message == NULL) {
+        	fwprintf(stderr, L"Erreur d'allocation de mémoire pour le message\n") ;
+        	free(buffer) ;
+        	return 1 ;
+    	}
+    	wcscpy(message, buffer) ;
 
-   
-   // chiffrement 
-   for (int i = 0 ; i < MAX_MESSAGE_LENGTH && Message[i] != '\0' ; i++) {
-      for (int j = 0 ; j < MAX_CHARACTER ; j++) {
-         if (Message[i] == Tableau_Alphabet[0][j]) {
-            for (int l = 0 ; l < MAX_CHARACTER ; l++) {
-               if (repeatedKey[i] == Tableau_Alphabet[l][0]) {
-                  MessageChiffre[i] = Tableau_Alphabet[l][j] ; break ;
-               }
-            }
-         }
-      }
-   }
+    	wchar_t* cipher_message = (wchar_t*)calloc(size_message + 1, sizeof(wchar_t)) ;
+    	if (cipher_message == NULL) {
+        	fwprintf(stderr, L"Erreur d'allocation de mémoire pour le message chiffré\n") ;
+        	free(message) ;
+        	free(buffer) ;
+        	return 1 ;
+    	}
 
-   // nettoyage de la clé de chiffrement
-   for (int i = 0 ; i < MAX_MESSAGE_LENGTH ; i++) {
-      Key[i] = 0 ; repeatedKey[i] = 0 ;
-   }
+    	wchar_t* cle = (wchar_t*)calloc(size_message + 1, sizeof(wchar_t)) ;
+    	if (cle == NULL) {
+        	fwprintf(stderr, L"Erreur d'allocation de mémoire pour la clé\n") ;
+        	free(cipher_message) ;
+        	free(message) ;
+        	free(buffer) ;
+        	return 1 ;
+    	}
 
-   wprintf(L"%ls", MessageChiffre) ;
+    	fwprintf(stdout, L"Entrez la clé : \n") ;
+    	if (fgetws(buffer, buffer_size, stdin) == NULL) {
+        	fwprintf(stderr, L"Erreur de lecture de l'entrée pour la clé\n") ;
+        	free(cle) ;
+        	free(cipher_message) ;
+        	free(message) ; 
+        	free(buffer) ;
+        	return 1 ;
+    	}
 
-   } 
+    	size_t size_key = wcslen(buffer) ;
+    	if (size_key > 0 && buffer[size_key - 1] == L'\n') {
+        	buffer[size_key - 1] = L'\0' ;
+        	size_key-- ;
+    	}
 
-   if (Choice == 2) {
+    	repeatKey(buffer, message, cle) ;
+       
+    	free(buffer) ; 
 
-   // récupération du message 
-   printf("Entrez le message à déchiffrer : \n") ;
-   fgetws(Message, sizeof(Message) / sizeof(wchar_t), stdin) ;
-   size_t messageLen = wcslen(Message);
+	if (*(&Choice[0]) == '1') {
 
-      if (Message[messageLen - 1] == L'\n') {
-         Message[messageLen - 1] = L'\0';
-      }
-   
-   // récupération de la clé
-   printf("Entrez la clé de chiffrement : \n") ;
-   fgetws(Key, sizeof(Key) / sizeof(wchar_t), stdin) ;
-   size_t keyLen = wcslen(Key) ;
- 
-      // enlève la séquence d'échapement de retour à la ligne
-      if (Key[keyLen - 1] == L'\n') {
-         Key[keyLen - 1] = L'\0' ;
-      }
+    // Chiffrement
+	for (size_t i = 0 ; i < size_message ; i++) {
+    		int message_val = (int)message[i] ;
+   	 	int key_val = (int)cle[i] ;
+		if (message[i] == L' ') {
+     			cipher_message[i] = L' ' ; 
+		} else {
+    			cipher_message[i] = (wchar_t)((message_val + key_val) % 0x10FFFF) ;
+		}
 
-      // répétition de la clé en fonction du message, sortie : repeatedKey
-      repeatKey(Key, Message, repeatedKey) ;
+	}
 
-   
-   // déchiffrement 
-   for (int i = 0 ; i < (sizeof(Key) / sizeof(wchar_t)) && repeatedKey[i] != '\0'; i++) {
-      for (int j = 0 ; j < MAX_CHARACTER ; j++) {
-         if (repeatedKey[i] == Tableau_Alphabet[j][0]) {
-            for (int l = 0 ; l < MAX_CHARACTER ; l++) {
-               if (Message[i] == Tableau_Alphabet[j][l]) {
-                  MessageChiffre[i] = Tableau_Alphabet[0][l] ; break ;
-               }
-            }
-         }
-      }
-   }
-   MessageOrigine[messageLen] = L'\0' ;
-   // nettoyage de la clé de chiffrement
-   for (int i = 0 ; i < MAX_MESSAGE_LENGTH ; i++) {
-      Key[i] = 0 ; repeatedKey[i] = 0 ;
-   }
+    	cipher_message[size_message] = L'\0' ; 
 
-   wprintf(L"%ls", MessageChiffre) ;
+    	fwprintf(stdout, L"%ls", cipher_message) ;
 
-   } 
+    	// Libération de la mémoire
+    	free(cle) ;
+    	free(cipher_message) ;
+    	free(message) ;
 
-return 0 ;
+    	return 0 ;
+	}
+
+	if (*(&Choice[0]) == '2') {
+
+	    // Déhiffrement du message
+    	for (size_t i = 0 ; i < size_message ; i++) {
+    		int message_val = (int)message[i] ;
+   	 	    int key_val = (int)cle[i] ;
+		    if (message[i] == L' ') {
+    			cipher_message[i] = L' ' ; 
+		    } else {
+			    cipher_message[i] = (wchar_t)((message_val - key_val) % 0x10FFFF) ;
+		}
+	}
+    cipher_message[size_message] = L'\0' ; 
+
+    	// Affichage du message déchiffré
+    	fwprintf(stdout, L"%ls", cipher_message) ;
+
+    	// Libération de la mémoire
+    	free(cle) ;
+    	free(cipher_message) ;
+    	free(message) ;
+
+    	return 0 ;
+	}
+
+	return 1 ;
+
 }
-
-
-// Contact : 
-// ¦²¶­¸Ç¥¾¼­¹¼¼³²µµ}¯´Á
-// Clé : Violet
-// Coller avec les caracères de contrôle
