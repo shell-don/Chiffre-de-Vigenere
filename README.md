@@ -1,5 +1,5 @@
 # Chiffre de Vigenère
-Un chiffre de Vigenère universel qui ne prend en compte que les alphabets occidentaux modernes (jusqu'au point de code 1423) ce qui comprend le Latin de base et étendu, l'alphabet phonétique international, le Grec, le Copte, le Cyrillique et l'Arménien mais aussi des caractères de commandes et des diacritiques. 
+Un chiffre de Vigenère universel qui prend en compte TOUT les caractères Unicode et les chiffre selon le principe de Vigenère.
 
 ## Installation
 
@@ -14,19 +14,19 @@ Voulez-vous Chiffrer (1) ou Déchiffrer (2) ?
 Quelques exemples de chiffrement (haut) et de déchiffrement (bas) :
 ```bash
 1
-Entrez le message à chiffrer : 
-A§*£`<ñŽƱʬʄ˧ξϾζѨБԬփ     
-Entrez la clé de chiffrement : 
-GitHub
-hð~Ëµ~Ęǆȅ˔˙̩ϥчЊҐѦծ֪
+Entrez le message : 
+A æ💀‹ࢢญጩ ឦᮗᰜ∑⨕𐁍
+Entrez la clé : 
+Github
+ Ś📨₮率ࣩ๶᎝ ᠛᯹ᱣ≺⪉𐂵
 ```
 ```bash
 2
-Entrez le message à déchiffrer : 
-hð~Ëµ~Ęǆȅ˔˙̩ϥчЊҐѦծ֪
-Entrez la clé de chiffrement : 
-GitHub
-A§*£`<ñŽƱʬʄ˧ξϾζѨБԬփ
+Entrez le message : 
+ Ś📨₮率ࣩ๶᎝ ᠛᯹ᱣ≺⪉𐂵
+Entrez la clé : 
+Github
+A æ💀‹ࢢญጩ ឦᮗᰜ∑⨕𐁍
 ```
 Remarque : Ce chiffre ne peut pas être brisé si la taille de la clé est égale à la taille du message. Plus une clé est longue plus elle diminue la fréquence d'apparition de répétition de chaines de caractères dans le texte chiffré , donc sa probabilité d'être brisé. 
 
