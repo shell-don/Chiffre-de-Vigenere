@@ -1,3 +1,7 @@
+// Code écrit par : ÊèÐÞÕ ¹ÝÏÖÕºØé
+// Contact : ·ÒÛÉèÕ¶ÞáÉéÊ°Ü´ÏâÃ°Õ¢ËäÏ 
+// Clé : Github
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <wctype.h>
